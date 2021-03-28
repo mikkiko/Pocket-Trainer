@@ -1,5 +1,6 @@
 package com.github.mikkiko.pockettrainer.services;
 
+import com.github.mikkiko.pockettrainer.dto.ExerciseDTO;
 import com.github.mikkiko.pockettrainer.entity.Exercise;
 import com.github.mikkiko.pockettrainer.entity.Image;
 
@@ -8,15 +9,13 @@ import java.util.Optional;
 
 public interface ExercisesService {
 
-    boolean saveExercise(Exercise exercise);
+    void saveExercise(Exercise exercise);
 
-    Optional<Exercise> getExerciseById(Integer id);
+    ExerciseDTO getExerciseDTOById(Integer id);
 
-    boolean removeExerciseById(Integer Id);
-
-    List<Exercise> getAllExercises();
+    List<ExerciseDTO> getAllExercisesDTO();
 
     Optional<Image> getExerciseImage(Integer id);
 
-    void updateExercise(Exercise exercise);
+    boolean removeExerciseById(Integer Id);
 }

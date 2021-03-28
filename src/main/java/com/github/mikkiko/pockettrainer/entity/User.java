@@ -18,6 +18,8 @@ public class User {
 
     private String password;
 
+    private String name;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Training> trainings;

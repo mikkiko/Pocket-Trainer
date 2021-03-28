@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Accessors(chain = true)
 @Table(name = "training_x_exercises")
-public class TrainingsExercises {
+public class TrainingInfo {
 
     @Id
     @GeneratedValue
@@ -21,7 +21,7 @@ public class TrainingsExercises {
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
-    private Exercise exercises;
+    private Exercise exercise;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "training_id")

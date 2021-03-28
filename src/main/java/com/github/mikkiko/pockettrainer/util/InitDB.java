@@ -28,29 +28,28 @@ public class InitDB implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        uploadUsers();
+        uploadUser();
         uploadExercises();
-        System.out.println(exercisesService.getAllExercises());
+        System.out.println(exercisesService.getAllExercisesDTO());
         System.out.println(userService.getAllUsers());
     }
 
-    @Transactional
-    public void uploadUsers() {
-        for (int i = 0; i < 5; i++) {
-            userService.saveUser(new User()
-                    .setEmail("abs" + i + "@mail.com")
-                    .setPassword("" + 1000 * i * 34)
-                    .setTrainings(new ArrayList<>()));
-        }
-        System.out.println("Users uploaded");
+    public void uploadUser() {
+        userService.saveUser(new User()
+                .setEmail("admin@mail.com")
+                .setName("admin")
+                .setPassword("admin")
+                .setTrainings(new ArrayList<>()));
+        System.out.println("User uploaded");
     }
 
     public void uploadExercises() {
         try {
             File descriptionPath = new ClassPathResource("/exercises/description/").getFile();
             File imagePath = new ClassPathResource("/exercises/images/").getFile();
-            List<String> descriptions = Arrays.asList(descriptionPath.list());
+            String[] descriptions = descriptionPath.list();
 
+            assert descriptions != null;
             for (String a : descriptions) {
                 String name = "none";
                 String description = "none";

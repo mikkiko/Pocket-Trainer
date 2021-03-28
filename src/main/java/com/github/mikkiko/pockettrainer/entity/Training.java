@@ -22,6 +22,10 @@ public class Training {
 
     private Integer time;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "training_id")
+    private List<TrainingInfo> trainingInfo;
+
     @Override
     public String toString() {
         return "Training{" +

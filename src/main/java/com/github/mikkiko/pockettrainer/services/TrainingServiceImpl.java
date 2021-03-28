@@ -1,7 +1,10 @@
 package com.github.mikkiko.pockettrainer.services;
 
+import com.github.mikkiko.pockettrainer.dto.TrainingDTO;
 import com.github.mikkiko.pockettrainer.entity.Training;
+import com.github.mikkiko.pockettrainer.exception.NoSuchTrainingException;
 import com.github.mikkiko.pockettrainer.repository.TrainingRepository;
+import com.github.mikkiko.pockettrainer.util.EntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,32 +14,47 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TrainingServiceImpl implements TrainingService {
 
-    private final TrainingRepository repository;
+    private final TrainingRepository repo;
+    private final EntityMapper mapper;
 
     @Override
     public Optional<Training> getTrainingById(Integer id) {
-        return repository.findById(id);
+        return repo.findById(id);
     }
 
     @Override
-    public boolean saveTraining(Training training) {
-        repository.save(training);
-        return repository.existsById(training.getId());
+    public TrainingDTO getTrainingDTOById(Integer id) {
+        TrainingDTO dto = null;
+        try {
+            dto = mapper.fromEntityToTrainingDto(repo.findById(id).orElseThrow(NoSuchTrainingException::new));
+        } catch (NoSuchTrainingException e) {
+            e.printStackTrace();
+        }
+        return dto;
+    }
+
+    @Override
+    public void saveTraining(TrainingDTO dto) {
+        repo.save(mapper.fromTrainingDtoToEntity(dto));
+    }
+
+    @Override
+    public boolean updateTraining(TrainingDTO dto) {
+        if(repo.existsById(dto.getId())) {
+            Training updated = repo.getOne(dto.getId());
+            Training fromDto = mapper.fromTrainingDtoToEntity(dto);
+            updated.setName(fromDto.getName())
+                    .setRounds(fromDto.getRounds())
+                    .setTime(fromDto.getTime())
+                    .setTrainingInfo(fromDto.getTrainingInfo());
+            repo.save(updated);
+            return true;
+        } else return false;
     }
 
     @Override
     public boolean deleteTraining(Integer id) {
-        repository.deleteById(id);
-        return !repository.existsById(id);
-    }
-
-    @Override
-    public boolean updateTraining(Training newTraining) {
-        Optional<Training> oldTraining = repository.findById(newTraining.getId());
-        if(oldTraining.isPresent()){
-            repository.save(newTraining);
-            return true;
-        }
-        return false;
+        repo.deleteById(id);
+        return !repo.existsById(id);
     }
 }

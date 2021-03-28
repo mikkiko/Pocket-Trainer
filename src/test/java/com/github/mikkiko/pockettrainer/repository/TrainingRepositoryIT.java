@@ -2,7 +2,7 @@ package com.github.mikkiko.pockettrainer.repository;
 
 import com.github.mikkiko.pockettrainer.entity.Exercise;
 import com.github.mikkiko.pockettrainer.entity.Training;
-import com.github.mikkiko.pockettrainer.entity.TrainingsExercises;
+import com.github.mikkiko.pockettrainer.entity.TrainingInfo;
 import com.github.mikkiko.pockettrainer.exception.NoSuchTrainingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class TrainingRepositoryIT {
     @Sql(scripts = {"/sql/clearDb.sql", "/sql/initDb.sql"})
     @Test
     public void shouldProperlyFindAllTrainingsExercises(){
-        List<TrainingsExercises> training = repository.findTrainingsExercises(1);
+        List<TrainingInfo> training = repository.findTrainingsExercises(1);
 
         assertThat(training).hasSize(3);
     }
