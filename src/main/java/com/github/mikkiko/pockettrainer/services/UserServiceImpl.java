@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public boolean updateUserTrainings(String email, TrainingDTO training) {
         try {
             User user = repo.findById(email).orElseThrow(NoSuchUserException::new);

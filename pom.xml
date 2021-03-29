@@ -26,12 +26,14 @@
     </parent>
     <groupId>com.github.mikkiko</groupId>
     <artifactId>pockettrainer</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <name>PocketTrainer</name>
-    <description>Web sevrice to creating traning plans for whole body only with bodyweight</description>
+    <description>Web service to creating training plans for workout at home only with bodyweight</description>
+
     <properties>
         <java.version>11</java.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
