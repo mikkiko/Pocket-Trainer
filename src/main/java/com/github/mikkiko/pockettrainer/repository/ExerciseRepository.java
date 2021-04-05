@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * {@link Repository} for handling with {@link Exercise} entity.
+ */
+
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
 

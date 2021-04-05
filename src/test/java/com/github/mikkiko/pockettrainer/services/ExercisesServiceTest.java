@@ -3,6 +3,7 @@ package com.github.mikkiko.pockettrainer.services;
 import com.github.mikkiko.pockettrainer.dto.ExerciseDTO;
 import com.github.mikkiko.pockettrainer.entity.Exercise;
 import com.github.mikkiko.pockettrainer.entity.Image;
+import com.github.mikkiko.pockettrainer.exception.ExercisesException;
 import com.github.mikkiko.pockettrainer.repository.ExerciseRepository;
 import com.github.mikkiko.pockettrainer.util.EntityMapper;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class ExercisesServiceTest {
     private EntityMapper mapper;
 
     @Test
-    public void shouldProperlyGiveExercise() {
+    public void shouldProperlyGiveExercise() throws ExercisesException {
         Exercise given = new Exercise()
                 .setId(1)
                 .setDescription("description")

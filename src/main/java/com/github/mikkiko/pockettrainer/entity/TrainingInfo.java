@@ -5,6 +5,10 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
+/**
+ * Training information entity.
+ */
+
 @Data
 @Entity
 @Accessors(chain = true)

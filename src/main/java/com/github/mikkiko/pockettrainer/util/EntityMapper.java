@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * {@link Service} for mapping entities to DTO and DTO to entities.
+ */
+
 @Service
 public class EntityMapper {
 
     public User fromUserDtoToEntity(UserDTO dto) {
         return new User()
+                .setId(dto.getId())
                 .setEmail(dto.getEmail())
-                .setName(dto.getName())
+                .setNickname(dto.getNickname())
                 .setTrainings(dto.getTrainings()
                         .stream()
                         .map(this::fromTrainingDtoToEntity)
@@ -40,8 +45,9 @@ public class EntityMapper {
 
     public UserDTO fromEntityToUserDto(User user) {
         return new UserDTO()
+                .setId(user.getId())
                 .setEmail(user.getEmail())
-                .setName(user.getName())
+                .setNickname(user.getNickname())
                 .setTrainings(user.getTrainings()
                         .stream()
                         .map(this::fromEntityToTrainingDto)

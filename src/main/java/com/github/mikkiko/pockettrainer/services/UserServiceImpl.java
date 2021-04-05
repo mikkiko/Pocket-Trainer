@@ -3,7 +3,8 @@ package com.github.mikkiko.pockettrainer.services;
 import com.github.mikkiko.pockettrainer.dto.TrainingDTO;
 import com.github.mikkiko.pockettrainer.dto.UserDTO;
 import com.github.mikkiko.pockettrainer.entity.User;
-import com.github.mikkiko.pockettrainer.exception.NoSuchUserException;
+import com.github.mikkiko.pockettrainer.exception.Cause;
+import com.github.mikkiko.pockettrainer.exception.UserException;
 import com.github.mikkiko.pockettrainer.repository.UserRepository;
 import com.github.mikkiko.pockettrainer.util.EntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Implementation of {@link UserService}.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -21,61 +26,53 @@ public class UserServiceImpl implements UserService {
     private final EntityMapper mapper;
 
     @Override
-    public Optional<User> getUser(String email) {
-        return repo.findById(email);
+    public Optional<User> getUserById(Integer id) {
+        return repo.findById(id);
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return repo.findUserByEmail(email);
     }
 
     @Override
     public boolean saveUser(User user) {
         repo.save(user);
-        return repo.existsById(user.getEmail());
+        return repo.existsById(user.getId());
     }
 
     @Override
-    public boolean isUserExist(String email) {
-        return repo.existsById(email);
+    public boolean isUserExistByEmail(String email) {
+        return repo.existsUserByEmail(email);
     }
 
     @Override
-    public Optional<User> deleteUserByEmail(String email) {
-        Optional<User> user = repo.findById(email);
-        ;
-        repo.deleteById(email);
+    public Optional<User> deleteUserById(Integer id) {
+        Optional<User> user = repo.findById(id);
+        repo.deleteById(id);
         return user;
     }
 
     @Override
-    public UserDTO getUserDTO(String email) {
-        UserDTO dto = null;
-        try {
-            dto = mapper.fromEntityToUserDto(repo.findById(email).orElseThrow(NoSuchUserException::new));
-        } catch (NoSuchUserException e) {
-            e.printStackTrace();
-        }
-        return dto;
+    public  UserDTO getUserDTOById(Integer id) throws UserException {
+        return mapper.fromEntityToUserDto(repo.findById(id).orElseThrow(
+                () -> new UserException(Cause.USER_NOT_FOUND, id)));
     }
 
     @Override
-    public boolean updateUserTrainings(String email, TrainingDTO training) {
-        try {
-            User user = repo.findById(email).orElseThrow(NoSuchUserException::new);
+    public void updateUserTrainings(Integer id, TrainingDTO training) throws UserException {
+            User user = repo.findById(id).orElseThrow(
+                    () -> new UserException(Cause.USER_NOT_MODIFIED, id));
             user.getTrainings().add(mapper.fromTrainingDtoToEntity(training));
             repo.save(user);
-            return true;
-        } catch (NoSuchUserException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 
     @Override
-    public boolean updatePassword(String email, String newPassword) {
-        if (repo.existsById(email)) {
-            User user = repo.getOne(email);
+    public void updatePassword(Integer id, String newPassword) throws UserException {
+        if (repo.existsById(id)) {
+            User user = repo.getOne(id);
             repo.save(user.setPassword(newPassword));
-            return true;
-        } else
-            return false;
+        } else throw new UserException(Cause.USER_NOT_MODIFIED, id);
     }
 
     @Override

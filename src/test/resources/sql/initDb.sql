@@ -1,14 +1,14 @@
-INSERT INTO users VALUES ('abc1@mail.com', 'qwert1');
-INSERT INTO users VALUES ('abc2@mail.com', 'qwert2');
-INSERT INTO users VALUES ('abc3@mail.com', 'qwert3');
-INSERT INTO users VALUES ('abc4@mail.com', 'qwert4');
-INSERT INTO users VALUES ('abc5@mail.com', 'qwert5');
+INSERT INTO users (id, email, password) VALUES (1, 'abc1@mail.com', 'qwert1');
+INSERT INTO users (id, email, password) VALUES (2, 'abc2@mail.com', 'qwert2');
+INSERT INTO users (id, email, password) VALUES (3, 'abc3@mail.com', 'qwert3');
+INSERT INTO users (id, email, password) VALUES (4, 'abc4@mail.com', 'qwert4');
+INSERT INTO users (id, email, password) VALUES (5, 'abc5@mail.com', 'qwert5');
 
-INSERT INTO trainings VALUES (1, 'training1', 2, 20, 'abc1@mail.com');
-INSERT INTO trainings VALUES (2, 'training2', 2, 20, 'abc1@mail.com');
-INSERT INTO trainings VALUES (3, 'training3', 2, 20, 'abc1@mail.com');
-INSERT INTO trainings VALUES (4, 'training4', 2, 20, 'abc2@mail.com');
-INSERT INTO trainings VALUES (5, 'training5', 2, 20, 'abc3@mail.com');
+INSERT INTO trainings VALUES (1, 'training1', 2, 20, 1);
+INSERT INTO trainings VALUES (2, 'training2', 2, 20, 1);
+INSERT INTO trainings VALUES (3, 'training3', 2, 20, 1);
+INSERT INTO trainings VALUES (4, 'training4', 2, 20, 2);
+INSERT INTO trainings VALUES (5, 'training5', 2, 20, 3);
 
 INSERT INTO images VALUES (1, NULL);
 INSERT INTO images VALUES (2, NULL);

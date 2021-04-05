@@ -1,7 +1,12 @@
 package com.github.mikkiko.pockettrainer.dto;
 
+import com.github.mikkiko.pockettrainer.entity.TrainingInfo;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+/**
+ * Data transport object for {@link TrainingInfo}.
+ */
 
 @Data
 @Accessors(chain = true)

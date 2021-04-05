@@ -3,7 +3,6 @@ package com.github.mikkiko.pockettrainer.repository;
 import com.github.mikkiko.pockettrainer.entity.Exercise;
 import com.github.mikkiko.pockettrainer.entity.Training;
 import com.github.mikkiko.pockettrainer.entity.TrainingInfo;
-import com.github.mikkiko.pockettrainer.exception.NoSuchTrainingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,8 +28,8 @@ public class TrainingRepositoryIT {
 
     @Sql(scripts = {"/sql/clearDb.sql", "/sql/initDb.sql"})
     @Test
-    public void shouldProperlyFindTraining() throws NoSuchTrainingException {
-        Training training = repository.findById(1).orElseThrow(NoSuchTrainingException::new);
+    public void shouldProperlyFindTraining(){
+        Training training = repository.findById(1).orElse(null);
         assertThat(training.getName()).isEqualTo("training1");
     }
 

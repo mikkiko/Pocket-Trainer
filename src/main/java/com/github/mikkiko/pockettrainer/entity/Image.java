@@ -5,6 +5,9 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
+/**
+ * Image entity.
+ */
 
 @Entity
 @Data
