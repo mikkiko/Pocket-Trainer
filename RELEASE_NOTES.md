@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.5.0-SNAPSHOT
+
+*   PT-4: added REST controller for user, trainings and exercises.
+(refactored entity and dto layers)
+
+## 0.4.0-SNAPSHOT
+
+*   PT-3: updated repository and service layer.
+
 ## 0.3.0-SNAPSHOT
 
 *   PT-2: added DTO layer and updated service layer

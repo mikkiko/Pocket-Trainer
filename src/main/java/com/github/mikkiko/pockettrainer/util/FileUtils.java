@@ -1,6 +1,12 @@
 package com.github.mikkiko.pockettrainer.util;
 
+import org.springframework.stereotype.Service;
+
 import java.io.*;
+
+/**
+ * {@link Service} for extracting data from files into bytes.
+ */
 
 public class FileUtils {
 

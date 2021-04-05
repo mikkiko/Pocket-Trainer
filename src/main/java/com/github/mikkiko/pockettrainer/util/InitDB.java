@@ -15,6 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * {@link Service} for uploading all exercises to DataBase.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class InitDB implements ApplicationRunner {
@@ -34,7 +38,7 @@ public class InitDB implements ApplicationRunner {
     public void uploadUser() {
         userService.saveUser(new User()
                 .setEmail("admin@mail.com")
-                .setName("admin")
+                .setNickname("admin")
                 .setPassword("admin")
                 .setTrainings(new ArrayList<>()));
         System.out.println("User uploaded");

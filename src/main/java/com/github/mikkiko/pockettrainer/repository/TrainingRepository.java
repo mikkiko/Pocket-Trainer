@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * {@link Repository} for handling with {@link Training} entity.
+ */
+
 @Repository
 public interface TrainingRepository extends JpaRepository<Training, Integer> {
 

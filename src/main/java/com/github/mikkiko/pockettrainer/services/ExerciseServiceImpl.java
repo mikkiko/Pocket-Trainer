@@ -3,7 +3,7 @@ package com.github.mikkiko.pockettrainer.services;
 import com.github.mikkiko.pockettrainer.dto.ExerciseDTO;
 import com.github.mikkiko.pockettrainer.entity.Exercise;
 import com.github.mikkiko.pockettrainer.entity.Image;
-import com.github.mikkiko.pockettrainer.exception.NoSuchExerciseException;
+import com.github.mikkiko.pockettrainer.exception.ExercisesException;
 import com.github.mikkiko.pockettrainer.repository.ExerciseRepository;
 import com.github.mikkiko.pockettrainer.util.EntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+/**
+ * Implementation of {@link ExercisesService}.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +29,9 @@ public class ExerciseServiceImpl implements ExercisesService {
     }
 
     @Override
-    public ExerciseDTO getExerciseDTOById(Integer id) {
-        ExerciseDTO dto = null;
-        try {
-            dto = mapper.fromEntityToExerciseDto(repo.findById(id).orElseThrow(NoSuchExerciseException::new));
-        } catch (NoSuchExerciseException e) {
-            e.printStackTrace();
-        }
-        return dto;
+    public ExerciseDTO getExerciseDTOById(Integer id) throws ExercisesException {
+            return mapper.fromEntityToExerciseDto(repo.findById(id).orElseThrow(
+                    () -> new ExercisesException("")));
     }
 
     @Override

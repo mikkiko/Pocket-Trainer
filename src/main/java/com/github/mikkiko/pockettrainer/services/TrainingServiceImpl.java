@@ -2,13 +2,18 @@ package com.github.mikkiko.pockettrainer.services;
 
 import com.github.mikkiko.pockettrainer.dto.TrainingDTO;
 import com.github.mikkiko.pockettrainer.entity.Training;
-import com.github.mikkiko.pockettrainer.exception.NoSuchTrainingException;
+import com.github.mikkiko.pockettrainer.exception.Cause;
+import com.github.mikkiko.pockettrainer.exception.TrainingsException;
 import com.github.mikkiko.pockettrainer.repository.TrainingRepository;
 import com.github.mikkiko.pockettrainer.util.EntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+/**
+ * Implementation of {@link TrainingService}.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +28,9 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public TrainingDTO getTrainingDTOById(Integer id) {
-        TrainingDTO dto = null;
-        try {
-            dto = mapper.fromEntityToTrainingDto(repo.findById(id).orElseThrow(NoSuchTrainingException::new));
-        } catch (NoSuchTrainingException e) {
-            e.printStackTrace();
-        }
-        return dto;
+    public TrainingDTO getTrainingDTOById(Integer id) throws TrainingsException {
+        return  mapper.fromEntityToTrainingDto(repo.findById(id).orElseThrow(
+                () -> new TrainingsException(Cause.TRAINING_NOT_FOUND, id)));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public boolean updateTraining(TrainingDTO dto) {
+    public void updateTraining(TrainingDTO dto) throws TrainingsException {
         if(repo.existsById(dto.getId())) {
             Training updated = repo.getOne(dto.getId());
             Training fromDto = mapper.fromTrainingDtoToEntity(dto);
@@ -48,8 +48,7 @@ public class TrainingServiceImpl implements TrainingService {
                     .setTime(fromDto.getTime())
                     .setTrainingInfo(fromDto.getTrainingInfo());
             repo.save(updated);
-            return true;
-        } else return false;
+        } else throw new TrainingsException(Cause.TRAINING_NOT_MODIFIED, dto.getId());
     }
 
     @Override

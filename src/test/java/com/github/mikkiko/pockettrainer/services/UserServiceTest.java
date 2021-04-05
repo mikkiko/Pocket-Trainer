@@ -3,6 +3,7 @@ package com.github.mikkiko.pockettrainer.services;
 import com.github.mikkiko.pockettrainer.dto.UserDTO;
 import com.github.mikkiko.pockettrainer.entity.Training;
 import com.github.mikkiko.pockettrainer.entity.User;
+import com.github.mikkiko.pockettrainer.exception.UserException;
 import com.github.mikkiko.pockettrainer.repository.UserRepository;
 import com.github.mikkiko.pockettrainer.util.EntityMapper;
 import org.junit.jupiter.api.Test;
@@ -36,52 +37,54 @@ class UserServiceTest {
 
     @Test
     public void shouldProbablyGetUser(){
-        User givenUser = new User().setEmail("@mail.com").setPassword("1234");
-        given(repo.findById("@mail.com"))
+        User givenUser = new User().setId(6).setEmail("@mail.com").setPassword("1234");
+        given(repo.findUserByEmail("@mail.com"))
                 .willReturn(Optional.of(givenUser));
 
-        User user = userService.getUser("@mail.com").orElse(null);
+        User user = userService.getUserByEmail("@mail.com").orElse(null);
         assertThat(user).isEqualTo(givenUser);
     }
 
     @Test
-    public void shouldProbablyGetUserDto() {
+    public void shouldProbablyGetUserDto() throws UserException {
         User givenUser = new User()
+                .setId(1)
                 .setEmail("@mail.com")
                 .setPassword("1234")
-                .setName("name")
+                .setNickname("name")
                 .setTrainings(Arrays.asList(new Training()));
-        given(repo.findById("@mail.com")).willReturn(Optional.ofNullable(givenUser));
+        given(repo.findById(1)).willReturn(Optional.ofNullable(givenUser));
 
-        UserDTO dto = userService.getUserDTO("@mail.com");
+        UserDTO dto = userService.getUserDTOById(1);
         assertThat(mapper.fromUserDtoToEntity(dto).setPassword("1234")).isEqualTo(givenUser);
     }
 
     @Test
-    public void shouldUpdateUserTrainings() {
+    public void shouldUpdateUserTrainings() throws UserException {
         Training a1 = new Training().setId(1).setTrainingInfo(new ArrayList<>());
         Training a2 = new Training().setId(2).setTrainingInfo(new ArrayList<>());
         User givenUser = new User()
+                .setId(1)
                 .setEmail("@mail.com")
                 .setPassword("1234")
                 .setTrainings(new ArrayList<>(Arrays.asList(a1)));
 
-        given(repo.findById("@mail.com")).willReturn(Optional.of(givenUser));
+        given(repo.findById(1)).willReturn(Optional.of(givenUser));
 
-        userService.updateUserTrainings("@mail.com", mapper.fromEntityToTrainingDto(a2));
+        userService.updateUserTrainings(1, mapper.fromEntityToTrainingDto(a2));
 
         givenUser.setTrainings(new ArrayList<>(Arrays.asList(a1, a2)));
         verify(repo).save(givenUser);
     }
 
     @Test
-    public void shouldUpdatePassword() {
-        User givenUser = new User().setEmail("@mail.com").setPassword("1234");
-        given(repo.existsById("@mail.com")).willReturn(true);
-        given(repo.getOne("@mail.com")).willReturn(givenUser);
+    public void shouldUpdatePassword() throws UserException {
+        User givenUser = new User().setId(1).setEmail("@mail.com").setPassword("1234");
+        given(repo.existsById(1)).willReturn(true);
+        given(repo.getOne(1)).willReturn(givenUser);
 
-        userService.updatePassword("@mail.com", "4321");
-        User expectedUser = new User().setEmail("@mail.com").setPassword("4321");
+        userService.updatePassword(1, "4321");
+        User expectedUser = new User().setId(1).setEmail("@mail.com").setPassword("4321");
 
         verify(repo).save(expectedUser);
     }

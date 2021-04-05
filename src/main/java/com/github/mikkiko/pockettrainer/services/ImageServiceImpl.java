@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * Implementation of {@link ImageService}.
+ */
+
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService{
